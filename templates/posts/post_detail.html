@@ -1,4 +1,128 @@
-제목 : {{ post.title }}
-작성자 : {{ post.author }}
-작성일 : {{ post.created|date:"Y년 m월 d일"}}
-{{ post.body|safe }}
+{% extends 'base.html' %}
+{% block content %}
+{% block searchbar %}
+{% endblock searchbar %}
+<style>
+    img {
+        margin:0 auto;
+        display: block;
+    }
+</style>
+<div class=" w-8 flex justify-center text-2xl font-bold mt-10 w-full">
+    <span class="text-6xl">{{ post.title|linebreaks }}</span>
+</div>
+<div class="flex justify-center w-full">
+    
+</div>
+<div class="flex justify-center mr-16 items-center ml-10">
+    <span class="mx-3 text-sm">{{ post.category }} | </span>
+    <span>작성일 {{ post.created|date:"Y년 m월 d일"}}</span>
+</div>
+<div class=" flex justify-center pb-3">
+    <div class="flex h-12 pr-3">
+        {% include "mixins/user_avatar.html" with user_obj=post.author h_and_w="w-12 h12" %}
+        <a class="flex items-center" href="{% url 'users:profile' post.author.pk %}">{{ post.author.first_name }}</a>
+    </div>
+</div>
+<div class="flex border-b border-t">
+    <!-- 좌측 바 -->
+    <div class="w-1/4 mr-3">
+        <div class="flex flex-col items-center pt-3 h-50vh">
+            <!-- search-bar -->
+            <div class="text-center items-center pl-m r-24 pb-6">
+                <div class=" w-full">
+                    <form method="GET" action="{% url 'posts:search' %}">
+                        <div>
+                            <label for="f_search"></label>
+                            <select id="f_search" name="f_search">
+                                <option value="title">
+                                    제목
+                                </option>
+                                <option value="body">
+                                    내용
+                                </option>
+                                <option value="title_body">
+                                    제목+내용
+                                </option>
+                            </select>
+                            <label for="search"></label>
+                            <input value='{{search}}' id="search" name='search' placeholder="Search" required
+                            class="font-bold w-1/2 rounded-md h-10 border text-center mt-8"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div>
+                <div class="felx text-center">
+                    <span>Python</span>
+                    <button type="button" class="category-py" id="category-py">▼</button>
+                </div>
+                <div class="cate-py hidden flex flex-col">
+                {% for category in categories %}
+                    <a class="text-2xl border-b-2 border-black pt-2" href="/posts/{{category.name|capfirst}}">{{category}}({{ category.post.all|length }})</a>
+                {% endfor %}
+                </div>
+                <script type="text/javascript">
+                    $(".category-py").click(function(){
+                        $(".cate-py").toggleClass("hidden");
+                    
+                    if($(".category-py").text() == "▼"){
+                        $(".category-py").html("▲")}
+                    else($(".category-py").html("▼"))
+                })
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- 좌측바 끝 -->
+    <div class="post-detail flex flex-col justify-center w-1/2 mb-6 ">
+        <div id="body" class="container justify-center h-25hv w-25hv mx-auto pt-3">
+        {{ post.body|safe }}
+        </div>
+    </div>
+    <!-- 우측 바 -->
+    <div class="w-1/4 flex-col ml-3">
+        <div class="flex flex-col justify-end pt-32 h-full">
+            {% if request.user == post.author %}
+                <a class="border ml-3 text-center rounded-lg font-bold hover:bg-post_detail_gray h-16 w-24 pt-4 text-lg" href="{% url 'posts:edit' post.pk %}">수정하기</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class=" my-12">
+    <div class="container mx-auto h-8 w-1/2">
+        <form method="POST" action="{% url 'comment:create' post.pk%}">
+            {% csrf_token %}
+            {% for c_form in comment_form %}
+                {{ c_form }}
+            {% endfor %}
+            <div class="flex justify-end">
+                <button class="block border w-16 h-10">Save</button>
+            </div>
+            <script type="text/javascript">
+                var user = "{{ request.user.is_authenticated }}"
+                $(window).ready(function(){
+                    if(user === "True"){
+                        $(".comment-write").removeClass("cursor-not-allowed");
+                    } else {
+                        $(".comment-write").addClass("cursor-not-allowed");
+                    };
+                });
+                $(".comment-write").click(function(e){
+                    if(user === "False"){
+                        alert("로그인 후 이용해주세요.");
+                    }
+                })
+            </script>
+        </form>
+    </div>
+    <div class="flex flex-col mx-auto my-20 pt-64 w-full">
+        {% for comment in post.comments.all %}
+                <div class="flex justify-center w-full ">
+                    <div class="flex justify-end items-center w-1/6 pr-6 border-b border-r text-center">{{ comment.user.first_name }}</div>
+                    <div class="w-1/2 border-b py-3 pl-3 ">{{ comment|linebreaks }}</div>
+                </div>
+        {% endfor %}
+    {% endblock %}
+    </div>
+</div>

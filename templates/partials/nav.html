@@ -1,0 +1,70 @@
+<div class="banner absolute ml-5 flex flex-col mt-32">
+    <div>
+      <a class="flex border-b justify-center items-center h-16 bg-white" href="{% url 'core:list' %}">SeopSub</a>
+    </div>
+    <div>
+      <a class="flex border-b justify-center items-center h-16 bg-white" href="{% url 'posts:create' %}">글쓰기</a>
+    </div>
+    <div>
+      <a class="category border-b flex justify-center items-center h-16 bg-white">카테고리</a>
+      <div class="category-detail flex flex-col hidden">
+        <a class="flex justify-center items-center h-8 bg-white border-b" href="{% url 'posts:category' 'Django' %}">Django</a>
+        <a class="flex justify-center items-center h-8 bg-white border-b" href="{% url 'posts:category' 'Python' %}">Python</a>
+        <a class="flex justify-center items-center h-8 bg-white border-b" href="{% url 'posts:category' 'Django' %}">Django</a>
+      </div>
+    </div>
+    <div>
+      <a class="flex border-b justify-center items-center h-16 bg-white">gigi</a>
+    </div>
+    <div>
+      <a class="flex border-b justify-center items-center h-16 bg-white">gigi</a>
+    </div>
+    <div>
+      <a class="flex border-b justify-center items-center h-16 bg-white">gigi</a>
+    </div>
+    <div>
+      <a class="auth border-b flex justify-center items-center h-16 bg-white">Auth</a>
+        <div class="auth-detail hidden">
+          {% if request.user.is_authenticated %}
+            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:profile' request.user.pk %}">Profile</a>
+            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:logout' %}">Logout</a>
+          {% else %}
+            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:login' %}">Login</a>
+            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:signup' %}">SignUp</a>
+          {% endif %}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  $(".category").click(function(){
+    $(".category-detail").toggleClass("hidden");
+  });
+  $(".auth").click(function(){
+    $(".auth-detail").toggleClass("hidden");
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    // 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
+    var floatPosition = parseInt($(".banner").css('top'));
+    // 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
+  
+    $(window).scroll(function() {
+      // 현재 스크롤 위치를 가져온다.
+      var scrollTop = $(window).scrollTop();
+
+      var newPosition = scrollTop + floatPosition + "px";
+  
+      /* 애니메이션 없이 바로 따라감
+        $(".banner").css('top', newPosition);
+        */
+  
+      $(".banner").stop().animate({
+        "top" : newPosition
+      }, 500);
+  
+    }).scroll();
+  
+  });
+</script>

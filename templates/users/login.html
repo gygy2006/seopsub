@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block navbar %}
+{% endblock navbar %}
+{% block searchbar %}
+{% endblock searchbar %}
+<div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto lg:my-56 flex flex-col border p-6 border-gray-400">
+    <span class="text-center font-bold border-b pb-3">Login</span>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input w-full {% if field.errors %}has_error{% endif %}">
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <span class="text-red-700 font-medium text-sm">{{error}}</span> 
+                {% endfor %}
+            {% endif %}
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors%}
+                    <span class="error-message text-red-700 font-medium text-sm">{{error}}</span>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class=" pt-5 pb-5 flex flex-col items-center">
+            <div class="flex justify-start">
+                <label class="font-bold text-gray-500 mr-12 ml-10 text-sm" for="id_email">ID</label>
+                <input class="email-input border border-gray-300 ml-6" type="email" name="email" required="" id="id_email">
+            </div>
+            <div class="flex pt-5">
+                <label class="font-bold text-gray-500 ml-10 text-sm" for="id_password">Password&nbsp;&nbsp;</label>
+                <input class="password-input border ml-4 border-gray-800" type="password" name="password" required="" id="id_password">
+            </div>
+        </div>
+        <div class="flex justify-between pt-8 border-t">
+            <div class="flex border-2 border-black w-2/6 h-10 ml-10 items-center justify-center">
+                <button class="w-full">Login</button>
+            </div>
+            <div class=" bg-real-gray hover:text-white hover:bg-focus-gray flex border-2 border-black w-2/6 h-10 mr-10 items-center justify-center">
+                <a class="w-full text-center" href="{% url 'users:signup' %}">Join</a>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        var message = $(".error-message").text();
+        if(Boolean($(".error-message").text())){
+            if(message.substr(0,4) == "User"){
+                $(".email-input").toggleClass("bg-red-400");
+            }else if(message.substr(0,8) == "Password"){
+                $(".password-input").toggleClass("bg-red-400");
+            };
+            
+        };
+    </script>
+</div>
+{% endblock content %}

@@ -1,0 +1,23 @@
+{
+  "name": "seopsub",
+  "version": "1.0.0",
+  "description": "This is my personal blog",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gygy2006/seopsub.git"
+  },
+  "scripts": {
+    "css": "gulp"
+  },
+  "homepage": "https://github.com/gygy2006/seopsub#readme",
+  "devDependencies": {
+    "@ckeditor/ckeditor5-image": "^18.0.0",
+    "autoprefixer": "^9.7.4",
+    "gulp": "^4.0.2",
+    "gulp-csso": "^4.0.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "node-sass": "^4.13.1",
+    "tailwindcss": "^1.2.0"
+  }
+}

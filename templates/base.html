@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <link rel = "stylesheet" href = "{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        {% block head %}
+        {% endblock %}
+    </head>
+<title>{% block page_title %}Seop Sub Blog{% endblock page_title %}</title>
+</html>
+{% block navbar %}
+    {% include 'partials/nav.html' %}
+{% endblock navbar %}
+<!-- {% block cover-image %}
+<div class=" w-11/12 ml-2">
+    <div class="rounded-xl xl:-mx-40 mx-auto bg-gray-800 h-50vh mt-2 mb-2 bg-cover bg-center" style="background-image: url(https://images.unsplash.com/photo-1526395050546-dc5b0fe8df5f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop);"></div>
+</div>
+{% endblock %} -->
+</div>
+{% block searchbar %}
+<div class="text-center items-center mr-24 mt-10 ">
+    <div class="h-6 w-full">
+        <form method="GET" action="{% url 'posts:search' %}">
+            <div>
+                <label for="f_search"></label>
+                <select id="f_search" name="f_search">
+                    <option value="title">
+                        제목
+                    </option>
+                    <option value="body">
+                        내용
+                    </option>
+                    <option value="title_body">
+                        제목+내용
+                    </option>
+                </select>
+                <label for="search"></label>
+                <input value='{{search}}' id="search" name='search' placeholder="Search" required
+                class="font-bold w-1/2 rounded-md h-10 border text-center mt-8"/>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+{% block footer %}
+    {% include "partials/footer.html" %}
+{% endblock %}

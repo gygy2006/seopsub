@@ -38,9 +38,17 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-PROJECT_APPS = ["posts.apps.PostsConfig", "users.apps.UsersConfig"]
+PROJECT_APPS = [
+    "posts.apps.PostsConfig",
+    "users.apps.UsersConfig",
+    "comments.apps.CommentsConfig",
+]
 
-THIRD_PARTY_APPS = ["ckeditor", "ckeditor_uploader"]
+THIRD_PARTY_APPS = [
+    "ckeditor",
+    "ckeditor_uploader",
+    "django_seed",
+]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
@@ -51,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -106,6 +115,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
+LANGUAGES = [
+    ("ko", "Korean"),
+    ("en", "English"),
+]
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
@@ -117,17 +131,41 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+AUTH_USER_MODEL = "users.User"
 
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_DIRS = [os.path.join(BASE_DIR, "static")]
 
-if DEBUG is True:
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 MEDIA_URL = "/media/"
 
+# ckeditor
 AWS_QUERYSTRING_AUTH = False  # S3 에서 ckeditor 사용하기 위해
 
-print(os.path.join(BASE_DIR))
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "full",
+        "extends": {
+            "image": {
+                "toolbar": [
+                    "imageTextAlternative",
+                    "imageTitle",
+                    "|",
+                    "imageStyle:alignLeft",
+                    "imageStyle:full",
+                    "imageStyle:alignRight",
+                    "imageStyle:alignCenter",
+                    "imageStyle:side",
+                    "|",
+                ],
+                "styles": ["full", "side", "alignLeft", "alignRight", "alignCenter",],
+            }
+        },
+        "height": "500",
+        "width": "100%",
+        "toolbarCanCollapse": False,
+    },
+}

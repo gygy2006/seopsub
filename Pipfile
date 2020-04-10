@@ -9,6 +9,10 @@ autopep8 = "*"
 [packages]
 django = "==3.0.4"
 django-ckeditor = "*"
+pillow = "*"
+django-seed = "*"
+beautifulsoup4 = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"

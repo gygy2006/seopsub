@@ -1,6 +1,18 @@
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.media }}
-    {{ form.as_p }}
-    <button>Save</button>
-</form>
+{% extends 'base.html' %}
+{% block content %}
+{% block searchbar %}
+{% endblock %}
+<div class="container mx-auto flex flex-col mx-20 mt-10">
+    <span class="mb-3 text-center">POST CREATE</span>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
+        <div class="flex justify-end">
+            <button class=" hover:bg-red-500 text-center py-3 rounded-lg text-lg font-bold w-1/6 text-black border bg-real-gray">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

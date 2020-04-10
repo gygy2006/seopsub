@@ -21,7 +21,10 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ckeditor/", include("ckeditor_uploader.urls")),
+    path("", include("core.urls"), name="core"),
     path("posts/", include("posts.urls"), name="posts"),
+    path("users/", include("users.urls"), name="users"),
+    path("comment/", include("comments.urls"), name="comments"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
