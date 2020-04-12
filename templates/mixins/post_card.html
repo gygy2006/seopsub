@@ -36,22 +36,18 @@
                     <span class="text-xs font-sans">작성일 {{ post.created |date:"Y년 m월 d일"}}</span>
                 </div>
                 <div class="flex flex-col justify-between">
-                    <div class="overflow-hidden">
-                        {% if post.title|length > 20 %}
-                            <a class="items-center flex font-bold text-xl truncate" href="{% url 'posts:detail' post.pk %}">{{ post.title}}</a>
-                        {% else %}
-                            <a class="items-center flex font-bold text-xl truncate" href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a>
-                        {% endif %}
+                    <div class="overflow-hidden justify-center flex">
+                        <a class="text-center items-center flex font-bold text-xl truncate" href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a>
                     </div>
                     <!-- 좋아요 -->
                     <div class="flex">
                         {% for like in post.like.all %}
                         <a class="like bg-white" name="{{ post.id }}" value="Like">
-                            <i id="like-icon" class="fas fa-thumbs-up {% if request.user in like.like_user_set.all %}text-red-600{% else %}
+                            <i id="like-icon-{{post.id}}" class="fas fa-thumbs-up {% if request.user in like.like_user_set.all %}text-red-600{% else %}
                             text-black {% endif %}"></i>
                         </a>
                             <span id="count-{{ post.id }}">{{ like.total_like }}개</span>
-                            <span id="like-user-{{post.id}}">
+                            <span id="like-user-{{ post.id }}">
                             {% for like_user in like.like_user_set.all %}
                                 {{ like_user.first_name }}
                             {% endfor %}
@@ -65,11 +61,12 @@
     {% endfor %}
     <div class="flex flex-col justify-center">
         {% if page_obj.has_next %}
-            <a href="?page={{page_obj.next_page_number}}" class="text-teal-500 mt-1">
+            <a href="?page={{page_obj.next_page_number}}" class="next_page text-teal-500 mt-1">
                 <i class="fas fa-arrow-right fa-lg"></i></a>
         {% endif %}
     </div>
 </div>
+
 <script type="text/javascript">
     $(".like").click(function(){
       var pk = $(this).attr('name')
@@ -86,8 +83,10 @@
           var users = $("#like-user-"+pk).text();
           if(users.indexOf(response.nickname) != -1){
             $("#like-user-"+pk).text(users.replace(response.nickname, ""));
+            $("#like-icon-"+pk).removeClass("text-red-600")
           }else{
             $("#like-user-"+pk).text(response.nickname+users);
+            $("#like-icon-"+pk).addClass("text-red-600")
           }
         },
         error: function(request, status, error){ // 통신 실패시 - 로그인 페이지 리다이렉트

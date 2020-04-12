@@ -55,6 +55,13 @@ class PostListView(ListView):
     ordering = "-created"
     context_object_name = "posts"
 
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        if request.is_ajax():
+            return JsonResponse({"success": 1}, status=200)
+        else:
+            return response
+
 
 class PostDetailView(DetailView):
 
@@ -129,8 +136,9 @@ def search(request):
 @require_POST
 def post_like(request):
     pk = request.POST.get("pk", None)
+    print(pk)
     try:
-        like = models.Like.objects.get(pk=pk)
+        like = models.Like.objects.get(post__pk=pk)
     except models.Like.DoesNotExist:
         raise Http404
     if request.user in like.like_user_set.all():

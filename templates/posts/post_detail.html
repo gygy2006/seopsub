@@ -8,12 +8,67 @@
         display: block;
     }
 </style>
+
+{% if post.get_img %}
+<div class="previous_container absolute">
+    <i id="{{ request.META.HTTP_REFERER }}" class="previous_page absolute xi-arrow-left xi-5x text-teal-300 pt-5 cursor-pointer"></i>
+</div>
+<div class="cover_container absoulte">
+    <div class="cover_img rounded-xl bg-white mb-24 bg-cover bg-center overflow-hidden">
+        <img class="w-full" src='{{post.get_img}}' alt="">
+    </div>
+</div>
+{% endif %}
+<script type="text/javascript">
+    $(window).scroll(function(){
+        let $window = $(this);
+        let scrollTop = $window.scrollTop();
+        let windowHeight = $window.height();
+        let documentHeight = $(document).height();
+        console.log(documentHeight-windowHeight+scrollTop+730 + " | documentHeight:" + documentHeight + " | scrollTop:" + scrollTop + " | windowHeight: " + windowHeight );
+        if(scrollTop === 0){
+            $(".cover_img").animate({
+                height:"1230px",
+            },500,"linear")
+        } else {
+            $(".cover_img").removeClass("hidden").animate({
+                height:"560px",
+            },500,"linear");
+        }
+    });
+</script>
+<script>
+    $(document).ready(function() {
+      // 기존 css에서 플로팅 배너 위치(top)값을 가져와 저장한다.
+      var floatPosition = parseInt($(".previous_container").css('top'));
+      // 250px 이런식으로 가져오므로 여기서 숫자만 가져온다. parseInt( 값 );
+    
+      $(window).scroll(function() {
+        // 현재 스크롤 위치를 가져온다.
+        var scrollTop = $(window).scrollTop();
+  
+        var newPosition = scrollTop + floatPosition + "px";
+    
+        $(".previous_container").css('top', newPosition);
+
+      }).scroll();
+    
+    });
+  </script>
+<script type="text/javascript">
+    const previous = $(".previous_page").attr("id")
+    $(".previous_page").click(function(){
+        if(Boolean(previous) === true){
+        window.location.href = previous
+        } else if(Boolean(previous) === false){
+            window.location.href = "{% url 'core:list' %}"
+        }
+    });
+</script>
 <div class=" w-8 flex justify-center text-2xl font-bold mt-10 w-full">
     <span class="text-6xl">{{ post.title|linebreaks }}</span>
 </div>
-<div class="flex justify-center w-full">
-    
-</div>
+
 <div class="flex justify-center mr-16 items-center ml-10">
     <span class="mx-3 text-sm">{{ post.category }} | </span>
     <span>작성일 {{ post.created|date:"Y년 m월 d일"}}</span>
@@ -24,54 +79,10 @@
         <a class="flex items-center" href="{% url 'users:profile' post.author.pk %}">{{ post.author.first_name }}</a>
     </div>
 </div>
-<div class="flex border-b border-t">
+<div class="flex">
     <!-- 좌측 바 -->
     <div class="w-1/4 mr-3">
         <div class="flex flex-col items-center pt-3 h-50vh">
-            <!-- search-bar -->
-            <div class="text-center items-center pl-m r-24 pb-6">
-                <div class=" w-full">
-                    <form method="GET" action="{% url 'posts:search' %}">
-                        <div>
-                            <label for="f_search"></label>
-                            <select id="f_search" name="f_search">
-                                <option value="title">
-                                    제목
-                                </option>
-                                <option value="body">
-                                    내용
-                                </option>
-                                <option value="title_body">
-                                    제목+내용
-                                </option>
-                            </select>
-                            <label for="search"></label>
-                            <input value='{{search}}' id="search" name='search' placeholder="Search" required
-                            class="font-bold w-1/2 rounded-md h-10 border text-center mt-8"/>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div>
-                <div class="felx text-center">
-                    <span>Python</span>
-                    <button type="button" class="category-py" id="category-py">▼</button>
-                </div>
-                <div class="cate-py hidden flex flex-col">
-                {% for category in categories %}
-                    <a class="text-2xl border-b-2 border-black pt-2" href="/posts/{{category.name|capfirst}}">{{category}}({{ category.post.all|length }})</a>
-                {% endfor %}
-                </div>
-                <script type="text/javascript">
-                    $(".category-py").click(function(){
-                        $(".cate-py").toggleClass("hidden");
-                    
-                    if($(".category-py").text() == "▼"){
-                        $(".category-py").html("▲")}
-                    else($(".category-py").html("▼"))
-                })
-                </script>
-            </div>
         </div>
     </div>
     <!-- 좌측바 끝 -->

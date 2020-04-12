@@ -1,36 +1,26 @@
 <div class="banner absolute ml-5 flex flex-col mt-32">
     <div>
-      <a class="flex border-b justify-center items-center h-16 bg-white" href="{% url 'core:list' %}">SeopSub</a>
+      <a class="flex border-b justify-center items-center h-16 bg-transparent" href="{% url 'core:list' %}">SeopSub</a>
     </div>
     <div>
-      <a class="flex border-b justify-center items-center h-16 bg-white" href="{% url 'posts:create' %}">글쓰기</a>
+      <a class="flex border-b justify-center items-center h-16 bg-transparent" href="{% url 'posts:create' %}">글쓰기</a>
     </div>
     <div>
-      <a class="category border-b flex justify-center items-center h-16 bg-white">카테고리</a>
+      <a class="category border-b flex justify-center items-center h-16 bg-transparent">카테고리</a>
       <div class="category-detail flex flex-col hidden">
-        <a class="flex justify-center items-center h-8 bg-white border-b" href="{% url 'posts:category' 'Django' %}">Django</a>
-        <a class="flex justify-center items-center h-8 bg-white border-b" href="{% url 'posts:category' 'Python' %}">Python</a>
-        <a class="flex justify-center items-center h-8 bg-white border-b" href="{% url 'posts:category' 'Django' %}">Django</a>
+        <a class="flex justify-center items-center h-8 bg-transparent border-b" href="{% url 'posts:category' 'Django' %}">Django</a>
+        <a class="flex justify-center items-center h-8 bg-transparent border-b" href="{% url 'posts:category' 'Python' %}">Python</a>
       </div>
     </div>
     <div>
-      <a class="flex border-b justify-center items-center h-16 bg-white">gigi</a>
-    </div>
-    <div>
-      <a class="flex border-b justify-center items-center h-16 bg-white">gigi</a>
-    </div>
-    <div>
-      <a class="flex border-b justify-center items-center h-16 bg-white">gigi</a>
-    </div>
-    <div>
-      <a class="auth border-b flex justify-center items-center h-16 bg-white">Auth</a>
+      <a class="auth border-b flex justify-center items-center h-16 bg-transparent">Auth</a>
         <div class="auth-detail hidden">
           {% if request.user.is_authenticated %}
-            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:profile' request.user.pk %}">Profile</a>
-            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:logout' %}">Logout</a>
+            <a class="nav_child" href="{% url 'users:profile' request.user.pk %}">Profile</a>
+            <a class="nav_child " href="{% url 'users:logout' %}">Logout</a>
           {% else %}
-            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:login' %}">Login</a>
-            <a class="flex border-b justify-center items-center h-8 bg-white" href="{% url 'users:signup' %}">SignUp</a>
+            <a class="nav_child" href="{% url 'users:login' %}">Login</a>
+            <a class="nav_child" href="{% url 'users:signup' %}">SignUp</a>
           {% endif %}
         </div>
     </div>
@@ -54,7 +44,7 @@
       // 현재 스크롤 위치를 가져온다.
       var scrollTop = $(window).scrollTop();
 
-      var newPosition = scrollTop + floatPosition + "px";
+      var newPosition = 100 + scrollTop + floatPosition + "px";
   
       /* 애니메이션 없이 바로 따라감
         $(".banner").css('top', newPosition);

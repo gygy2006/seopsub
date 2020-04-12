@@ -112,4 +112,10 @@ form {
   }
 }
 
+.nav_child {
+  @apply flex border-b justify-center items-center h-8 bg-white;
+  &:hover {
+    @apply text-red-600;
+  }
+}
 @tailwind utilities;
