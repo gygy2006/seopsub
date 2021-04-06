@@ -11,7 +11,7 @@
   },
   "homepage": "https://github.com/gygy2006/seopsub#readme",
   "devDependencies": {
-    "@ckeditor/ckeditor5-image": "^18.0.0",
+    "@ckeditor/ckeditor5-image": "^27.0.0",
     "autoprefixer": "^9.7.4",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
